@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mp3</string>
+    <string name="action_settings">Settings</string>
+    <string name="bStart">Start</string>
+    <string name="bStop">Stop</string>
+    <string name="bEmailAvailable">Send Email</string>
+    <string name="bEmailNoWifi">Cannot Email</string>
+    <string name="bExit">Exit</string>
+</resources>

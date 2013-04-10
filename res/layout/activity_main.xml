@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<TextView
+        android:id="@+id/tvStatus"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:textIsSelectable="true" />
+    
+    <Button
+        android:id="@+id/RecordButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/round_start_button"
+        android:text="@string/bStart"
+        android:textSize="25sp"
+        android:gravity="center" />
+    
+	<TextView
+        android:id="@+id/tvFilename"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:textIsSelectable="false" />
+    
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_marginTop="25dp"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        android:gravity="center" />
+    
+    <Button
+        android:id="@+id/EmailButton"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:text="@string/bEmailAvailable"
+        android:textSize="25sp"
+        android:gravity="center" />
+    
+    <Button
+        android:id="@+id/ExitButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:text="@string/bExit"
+        android:textSize="25sp"
+        android:gravity="center" />
+    
+</LinearLayout>
