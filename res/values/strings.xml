@@ -6,6 +6,10 @@
     <string name="bStart">Start</string>
     <string name="bStop">Stop</string>
     <string name="bEmailAvailable">Send Email</string>
-    <string name="bEmailNoWifi">Cannot Email</string>
+    <string name="bEmailNoWifi">No Wifi, Cannot Email</string>
+    <string name="bEmailFileAvailable">Email File</string>
+    <string name="bEmailFileNoWifi">No Wifi, Cannot Email file</string>
     <string name="bExit">Exit</string>
+    <string name="goto_root">..</string>
+    
 </resources>

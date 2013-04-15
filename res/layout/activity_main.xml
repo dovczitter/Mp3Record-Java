@@ -46,9 +46,9 @@
         android:gravity="center" />
     
     <Button
-        android:id="@+id/EmailButton"
+        android:id="@+id/EmailMp3Button"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:text="@string/bEmailAvailable"
@@ -56,9 +56,23 @@
         android:gravity="center" />
     
     <Button
+        android:id="@+id/EmailFileButton"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:text="@string/bEmailFileAvailable"
+        android:textSize="25sp"
+        android:gravity="center" />
+    
+	<ListView android:id="@android:id/list"
+    	android:layout_width="wrap_content"
+        android:layout_height="200dp"/>
+
+    <Button
         android:id="@+id/ExitButton"
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:text="@string/bExit"

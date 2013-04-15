@@ -1,8 +1,10 @@
 package com.mp3record;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import com.email.Email;
 import com.lame.Mp3Lame;
@@ -15,7 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.os.SystemClock;
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -23,25 +25,28 @@ import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends ListActivity implements OnClickListener {
 
-	static TextView tvStatus;
-	static TextView tvFilename;
-	static Button bRecord;
-	static Button bEmail;
-	static Button bExit;
-	static Configuration mp3Config;
-	Animation blinker;
-	Mp3Lame mp3Lame;
-	Chronometer chronometer;
-	String dirPath = "";
-	String fileName = "";
-	static String fullFileName = "";
+	private static TextView tvStatus;
+	private static TextView tvFilename;
+	private static Button bRecord;
+	private static Button bEmailMp3;
+	private static Button bEmailFile;
+	private static Button bExit;
+	private static Configuration mp3Config;
+	private Animation blinker;
+	private Mp3Lame mp3Lame;
+	private Chronometer chronometer;
+	private String dirPath = "";
+	private static String mp3PathName = "";
+	private List<String> items = null;
 	
 	private Button getRecordButton()
 	{
@@ -65,27 +70,62 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		});
 	}
-	private Button getEmailButton()
+	private Button getEmailMp3Button()
 	{
-		if (bEmail == null)
-			bEmail = (Button) findViewById(R.id.EmailButton);
-		return bEmail;
+		if (bEmailMp3 == null)
+			bEmailMp3 = (Button) findViewById(R.id.EmailMp3Button);
+		return bEmailMp3;
 	}
-	private void setEmailButton ()
+	private void setEmailMp3Button ()
 	{
-		getEmailButton().setText(isOnline() ? R.string.bEmailAvailable : R.string.bEmailNoWifi);
-		getEmailButton().setOnClickListener(new View.OnClickListener() { 
+		getEmailMp3Button().setText(isOnline() ? R.string.bEmailAvailable : R.string.bEmailNoWifi);
+		getEmailMp3Button().setOnClickListener(new View.OnClickListener() { 
 			public void onClick(View view) {
-				if (isConfigured() && isOnline()) {
-					try { 
-						Email.send (getAppName(), getFullFilename());
-					} catch(Exception e) { 
-						//Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show(); 
-						Log.e("MailApp", "Could not send email", e); 
-					} 
-				}
+				sendMp3 (getMp3Pathname());
 			} 
 		});
+	}
+	private Button getEmailFileButton()
+	{
+		if (bEmailFile == null)
+			bEmailFile = (Button) findViewById(R.id.EmailFileButton);
+		return bEmailFile;
+	}
+	private String getEmailFileButtonText()
+	{
+		String text = (isOnline() ? getString(R.string.bEmailFileAvailable) : getString(R.string.bEmailFileNoWifi));
+		return text;
+	}
+	private void setEmailFileButton ()
+	{
+		getEmailFileButton().setText(getEmailFileButtonText());
+		getEmailFileButton().setOnClickListener(new View.OnClickListener() { 
+			public void onClick(View view) {
+				getFiles (new File(getDirPath()).listFiles());
+			} 
+		});
+	}
+	private void sendFile (String pathName)
+	{
+		if (isConfigured() && isOnline()) {
+			try { 
+				Email.sendFile (pathName);
+			} catch(Exception e) { 
+				//Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show(); 
+				Log.e("MailApp", "Could not send email", e); 
+			} 
+		}
+	}
+	private void sendMp3 (String pathName)
+	{
+		if (isOnline()) {
+			try { 
+				Email.sendMp3 (pathName);
+			} catch(Exception e) { 
+				//Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show(); 
+				Log.e("MailApp", "Could not send email", e); 
+			} 
+		}
 	}
 	private Button getExitButton()
 	{
@@ -115,7 +155,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	            if (text.length()  == 4)
 	                chronometer.setText("0"+text);
 	            if (isConfigured())
-	            	bEmail.setText(isOnline() ? R.string.bEmailAvailable : R.string.bEmailNoWifi);
+	            	bEmailMp3.setText(isOnline() ? R.string.bEmailAvailable : R.string.bEmailNoWifi);
+            		bEmailFile.setText(getEmailFileButtonText());
 	        	}
 			});
 
@@ -147,9 +188,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			dirPath = Environment.getExternalStorageDirectory().getPath() + "/" + getAppName();
 		return dirPath;
 	}
-	private String getFullFilename()
+	private String getMp3Pathname()
 	{
-		if (fullFileName == null || fullFileName == "")
+		if (mp3PathName == null || mp3PathName == "")
 		{
 			final String months[] = {
 					"Jan", "Feb", "Mar", "Apr",
@@ -159,7 +200,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			GregorianCalendar gcalendar = new GregorianCalendar();
 			File dir = new File(getDirPath() +"/");
 			dir.mkdirs();
-			fullFileName = String.format("%s/%02d%s%d_%02d%02d%02d.mp3",
+			mp3PathName = String.format("%s/%02d%s%d_%02d%02d%02d.mp3",
 									dir.toString(),
 									gcalendar.get(Calendar.DATE),
 									months[gcalendar.get(Calendar.MONTH)],
@@ -168,13 +209,12 @@ public class MainActivity extends Activity implements OnClickListener {
 									gcalendar.get(Calendar.MINUTE),
 									gcalendar.get(Calendar.SECOND));
 		}
-		return fullFileName;
+		return mp3PathName;
 	}
-	private String getFilenameFromPath()
+	private String getFilenameFromPath (String filepath)
 	{
-		String fn = getFullFilename();
-		int start = fn.lastIndexOf("/") + 1;
-		return fn.substring(start);
+		int start = filepath.lastIndexOf("/") + 1;
+		return filepath.substring(start);
 	}
 	private Animation getBlinker()
 	{
@@ -191,7 +231,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Mp3Lame getMp3Lame()
 	{
 		if (mp3Lame == null)
-			mp3Lame = new Mp3Lame(getFullFilename());
+			mp3Lame = new Mp3Lame (getMp3Pathname());
 		return mp3Lame;
 	}
 	private String getAppName()
@@ -210,7 +250,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		StrictMode.setThreadPolicy(policy);
 		
 		setRecordButton();
-		setEmailButton ();
+		setEmailMp3Button ();
+		setEmailFileButton ();
 		setExitButton ();
 		
 		getMp3Lame().setHandle (new Handler() {
@@ -235,9 +276,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		getChronometer().setBase (SystemClock.elapsedRealtime());
 		getChronometer().start();
 		getTvStatus().setText (MsgType.RecStarted.name());
-		getMp3Lame().setFilePath (getFullFilename());
+		getMp3Lame().setFilePath (getMp3Pathname());
 		getMp3Lame().start();
-		getTvFilename().setText (getFilenameFromPath());
+		getTvFilename().setText (getFilenameFromPath (getMp3Pathname()));
 	}
 
 	private void stopRecording ()
@@ -272,5 +313,31 @@ public class MainActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 	
 	} 
- 
+	//
+	// Credits go to : http://www.remwebdevelopment.com/dev/a34/Directory-Browser-Application.html
+	//
+    protected void onListItemClick(ListView l, View v, int position, long id){
+        int selectedRow = (int)id;
+        if(selectedRow == 0){
+        	getFiles (new File(getDirPath()).listFiles());
+        }else{
+            File file = new File(items.get(selectedRow));
+            if(file.isDirectory()){
+                getFiles(file.listFiles());
+            }else{
+				sendFile (file.getPath());
+            }
+        }
+        setListAdapter(null);
+    }
+    private void getFiles(File[] files){
+        items = new ArrayList<String>();
+        items.add(getString(R.string.goto_root));
+        for(File file : files){
+            items.add(file.getPath());
+        }
+        ArrayAdapter<String> fileList = new ArrayAdapter<String>(this,R.layout.file_list_row, items);
+        setListAdapter(fileList);
+    }
+
 }

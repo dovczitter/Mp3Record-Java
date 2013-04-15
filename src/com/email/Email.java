@@ -29,34 +29,44 @@ import com.mp3record.ConfigType;
 
 public class Email
 {
-    public static void send (String appName, String pathName) throws Exception
+    public static void sendMp3 (String pathName) throws Exception
     {
- 	    Session session = Session.getInstance (getProperties(), new Mp3Authenticator(ConfigType.AuthUser.getValue(), ConfigType.AuthPwd.getValue()));
-    	String filename = getFilename(pathName);
-    	String newPath = getNewPath(pathName);
+    	String newPath = getConfigPath (pathName);
     	if (newPath.compareTo(pathName) != 0)
     		copyFile (pathName, newPath);
+    	send (newPath);
+    }
+    public static void sendFile (String pathName) throws Exception
+    {
+    	send (pathName);
+    }
+    private static void send (String pathName) throws Exception
+    {
+    	File file = new File(pathName);
+    	if (!file.exists())
+    		return;
     	
-		String msgText1 = "Sent from Android " +appName+ " : "+filename;
+ 	    Session session = Session.getInstance (getProperties(), new Mp3Authenticator(ConfigType.AuthUser.getValue(), ConfigType.AuthPwd.getValue()));
+		String msgText1 = "Sent from Android " +pathName;
 		
 		MimeMessage msg = new MimeMessage(session);
 		msg.setFrom(new InternetAddress(ConfigType.AuthUser.getValue()));
 		Address[] address = InternetAddress.parse(ConfigType.SendTo.getValue());
 		msg.addRecipients(Message.RecipientType.TO, address);
 		msg.setSubject(msgText1);
-
+	
 		// create and fill the first message part
 		MimeBodyPart mbp1 = new MimeBodyPart();
 		mbp1.setText(msgText1);
-
+	
 		// create the second message part
 		MimeBodyPart mbp2 = new MimeBodyPart();
-
+	
 		// attach the file to the message
-		FileDataSource fds = new FileDataSource(newPath);
+		FileDataSource fds = new FileDataSource(pathName);
 		mbp2.setDataHandler(new DataHandler(fds));
 		mbp2.setFileName(fds.getName());
-
+	
 	     // create the Multipart and add its parts to it
 		Multipart mp = new MimeMultipart();
 		mp.addBodyPart(mbp1);
@@ -64,14 +74,13 @@ public class Email
 		
 		// add the Multipart to the message
 		msg.setContent(mp);
-
+	
 	    // set the Date: header
 		msg.setSentDate(new Date());
 	      
 		// send the message
 		Transport.send(msg);
-    }
- 
+	}
     private static Properties getProperties()
     {
 	    Properties properties = new Properties();
@@ -88,17 +97,7 @@ public class Email
 	    
 	    return properties;
     }
-    private static String getFilename(String pathName)
-	{
-		int start = pathName.lastIndexOf("/") + 1;
-		String fn = pathName.substring(start);
-    	String cfgFn = ConfigType.Mp3Filename.getValue();
-    	if (cfgFn!=null && !cfgFn.isEmpty()) {
-    		fn = cfgFn;
-    	}
-		return fn;
-	}
-    private static String getNewPath(String pathName)
+    private static String getConfigPath (String pathName)
 	{
     	String fn = pathName;
     	String cfgFn = ConfigType.Mp3Filename.getValue();
