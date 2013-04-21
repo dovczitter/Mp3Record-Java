@@ -17,8 +17,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,13 +36,16 @@ import android.widget.Toast;
 
 public class MainActivity extends ListActivity implements OnClickListener {
 
-	private static TextView tvStatus;
+	private TextView tvStatus;
 	private static TextView tvFilename;
-	private static Button bRecord;
-	private static Button bEmailMp3;
-	private static Button bEmailFile;
-	private static Button bExit;
-	private static Configuration mp3Config;
+	private Button bRecord;
+	private Button bEmailMp3;
+	private Button bEmailFile;
+	private Button bExit;
+	private Configuration mp3Config;
+	
+	private AlertDialog.Builder exitConfirm;
+	private AlertDialog.Builder emailMp3Confirm;
 	private Animation blinker;
 	private Mp3Lame mp3Lame;
 	private Chronometer chronometer;
@@ -81,7 +86,8 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		getEmailMp3Button().setText(isOnline() ? R.string.bEmailAvailable : R.string.bEmailNoWifi);
 		getEmailMp3Button().setOnClickListener(new View.OnClickListener() { 
 			public void onClick(View view) {
-				sendMp3 (getMp3Pathname());
+				emailMp3Confirm.setMessage("Do you really want to email '"+getTvFilename().getText().toString()+"' ?");
+				emailMp3Confirm.create().show();
 			} 
 		});
 	}
@@ -137,11 +143,41 @@ public class MainActivity extends ListActivity implements OnClickListener {
 	{
 		getExitButton().setOnClickListener(new View.OnClickListener() { 
 			public void onClick(View view) {
-				System.exit(0);
+				exitConfirm.create().show();
 			} 
 		});
 	}
 
+	private void setExitConfirm()
+	{
+		exitConfirm = new AlertDialog.Builder(this);
+		exitConfirm.setTitle("'Exit' confirmination.");
+		exitConfirm.setMessage("Do you really want to exit?");
+		exitConfirm.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	System.exit(0);
+	        } });
+		exitConfirm.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	            dialog.dismiss();
+	        } });
+	}
+
+	private void setEmailMp3Confirm()
+	{
+		emailMp3Confirm = new AlertDialog.Builder(this);
+		emailMp3Confirm.setTitle("'Email' confirmination.");
+		emailMp3Confirm.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	sendMp3 (getMp3Pathname());
+	        	dialog.dismiss();
+	        } });
+		emailMp3Confirm.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	            dialog.dismiss();
+	        } });
+	}
+	
 	private Chronometer getChronometer()
 	{
 		if (chronometer == null)
@@ -211,6 +247,10 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		}
 		return mp3PathName;
 	}
+	private void clearMp3Pathname()
+	{
+		mp3PathName = "";
+	}
 	private String getFilenameFromPath (String filepath)
 	{
 		int start = filepath.lastIndexOf("/") + 1;
@@ -253,7 +293,9 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		setEmailMp3Button ();
 		setEmailFileButton ();
 		setExitButton ();
-		
+		setExitConfirm();
+		setEmailMp3Confirm();
+				
 		getMp3Lame().setHandle (new Handler() {
 			@Override
 			public void handleMessage(Message msg)
@@ -270,6 +312,7 @@ public class MainActivity extends ListActivity implements OnClickListener {
 
 	private void startRecording ()
 	{
+		clearMp3Pathname();
 		getRecordButton().setBackgroundResource (R.drawable.round_stop_button);
 		getRecordButton().setText (R.string.bStop);
 		getRecordButton().startAnimation (getBlinker());
@@ -278,7 +321,7 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		getTvStatus().setText (MsgType.RecStarted.name());
 		getMp3Lame().setFilePath (getMp3Pathname());
 		getMp3Lame().start();
-		getTvFilename().setText (getFilenameFromPath (getMp3Pathname()));
+		getTvFilename().setText ("["+getFilenameFromPath (getMp3Pathname())+"]");
 	}
 
 	private void stopRecording ()
@@ -289,6 +332,7 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		getChronometer().stop();
 		getTvStatus().setText (MsgType.RecStopped.name());
 		getMp3Lame().stop();
+		
 	}
 
 	private boolean isOnline()
@@ -339,5 +383,4 @@ public class MainActivity extends ListActivity implements OnClickListener {
         ArrayAdapter<String> fileList = new ArrayAdapter<String>(this,R.layout.file_list_row, items);
         setListAdapter(fileList);
     }
-
 }
