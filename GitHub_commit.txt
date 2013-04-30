@@ -1,0 +1,222 @@
+Username: dov_czitter@yahoo.com
+Password: dovczitter1
+
+===========================================================
+
+Welcome to Git (version 1.8.0-preview20121022)
+
+
+Run 'git help git' to display the help index.
+Run 'git help <command>' to display help for specific commands.
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git init
+Reinitialized existing Git repository in c:/workspace/Mp3Record/.git/
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ ls readme
+ls: readme: No such file or directory
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ ls
+AndroidManifest.xml  bin                  jni       obj                   src
+Mp3.cfg              buildit.bat          libs      proguard-project.txt
+Mp3Record            gen                  lint.xml  project.properties
+assets               ic_launcher-web.png  master    res
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ touch lint.xml
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git add lint.xml
+warning: LF will be replaced by CRLF in lint.xml.
+The file will have its original line endings in your working directory.
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git commit -m 'test commit, lint.xml'
+# On branch master
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       .settings/
+#       Mp3Record/
+#       bin/
+#       master/
+#       obj/
+nothing added to commit but untracked files present (use "git add" to track)
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git remote add origin https://github.com/dovczitter/Mp3Record.git
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git push origin master
+Username for 'https://github.com': dov_czitter@yahoo.com
+Password for 'https://dov_czitter@yahoo.com@github.com':
+
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git remote add origin https://github.com/dovczitter/Mp3Record.git
+fatal: remote origin already exists.
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git push origin master
+Username for 'https://github.com': dov_czitter@yahoo.com
+Password for 'https://dov_czitter@yahoo.com@github.com':
+To https://github.com/dovczitter/Mp3Record.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/dovczitter/Mp3Record.git'
+
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git pull
+Username for 'https://github.com': dov_czitter@yahoo.com
+Password for 'https://dov_czitter@yahoo.com@github.com':
+warning: no common commits
+remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From https://github.com/dovczitter/Mp3Record
+ * [new branch]      master     -> origin/master
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream master <remote>/<branch>
+
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git push origin master
+Username for 'https://git  b.com':  H H H
+Password for 'https://github.com':
+fatal: Authentication failed
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git push origin master
+Username for 'https://github.com': dov_czitter@yahoo.com
+Password for 'https://dov_czitter@yahoo.com@github.com':
+To https://github.com/dovczitter/Mp3Record.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/dovczitter/Mp3Record.git'
+
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git pull
+Username for 'https://github.com': dov_czitter@yahoo.com
+Password for 'https://dov_czitter@yahoo.com@github.com':
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream master <remote>/<branch>
+
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git pull Mp3Record
+You asked to pull from the remote 'Mp3Record', but did not specify
+a branch. Because this is not the default configured remote
+for your current branch, you must specify a branch on the command line.
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git pull Mp3Record master
+From master
+ * branch            master     -> FETCH_HEAD
+Already up-to-date.
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git push origin master
+Username for 'https://github.com': dov_czitter@yahoo.com
+Password for 'https://dov_czitter@yahoo.com@github.com':
+To https://github.com/dovczitter/Mp3Record.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/dovczitter/Mp3Record.git'
+
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git push --help
+Launching default browser to display HTML ...
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git push origin master all
+Username for 'https://github.com': dov_czitter@yahoo.com
+Password for 'https://dov_czitter@yahoo.com@github.com':
+error: src refspec all does not match any.
+error: failed to push some refs to 'https://github.com/dovczitter/Mp3Record.git'
+
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$ git push origin master --all
+error: --all can't be combined with refspecs
+usage: git push [<options>] [<repository> [<refspec>...]]
+
+    -v, --verbose         be more verbose
+    -q, --quiet           be more quiet
+    --repo <repository>   repository
+    --all                 push all refs
+    --mirror              mirror all refs
+    --delete              delete refs
+    --tags                push tags (can't be used with --all or --mirror)
+    -n, --dry-run         dry run
+    --porcelain           machine-readable output
+    -f, --force           force updates
+    --recurse-submodules[=<check>]
+                          control recursive pushing of submodules
+    --thin                use thin pack
+    --receive-pack <receive-pack>
+                          receive pack program
+    --exec <receive-pack>
+                          receive pack program
+    -u, --set-upstream    set upstream for git pull/status
+    --progress            force progress reporting
+    --prune               prune locally removed refs
+
+
+Dov Czitter@DOVHOME /C/workspace/Mp3Record (master)
+$
+
+============================================ [14apr2013, 2045] ======================================
+
+Microsoft Windows XP [Version 5.1.2600]
+(C) Copyright 1985-2001 Microsoft Corp.
+
+C:\Documents and Settings\Dov Czitter\My Documents\GitHub>ls
+
+C:\Documents and Settings\Dov Czitter\My Documents\GitHub>git push origin master
+fatal: Not a git repository (or any of the parent directories): .git
+
+C:\Documents and Settings\Dov Czitter\My Documents\GitHub>cd \workspace
+
+C:\workspace>cd Mp3Record
+
+>>>>>>>>>>>>> C:\workspace\Mp3Record>git push origin master
+Counting objects: 59, done.
+Compressing objects: 100% (34/34), done.
+Writing objects: 100% (43/43), 1.24 MiB | 31 KiB/s, done.
+Total 43 (delta 8), reused 0 (delta 0)
+To https://github.com/dovczitter/Mp3Record.git
+   9dce687..7a505c8  master -> master
+
+C:\workspace\Mp3Record>

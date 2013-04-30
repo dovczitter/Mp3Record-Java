@@ -5,11 +5,11 @@
     <string name="action_settings">Settings</string>
     <string name="bStart">Start</string>
     <string name="bStop">Stop</string>
-    <string name="bEmailAvailable">Send Email</string>
-    <string name="bEmailNoWifi">No Wifi, Cannot Email</string>
+    <string name="bEmailAvailable">Email Mp3</string>
+    <string name="bEmailNoWifi">No Wifi</string>
     <string name="bEmailFileAvailable">Email File</string>
-    <string name="bEmailFileNoWifi">No Wifi, Cannot Email file</string>
+    <string name="bEmailFileNoWifi">No Wifi</string>
+    <string name="bHelp">Help</string>
     <string name="bExit">Exit</string>
-    <string name="goto_root">..</string>
     
 </resources>

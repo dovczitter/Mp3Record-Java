@@ -13,14 +13,17 @@ public enum MsgType {
 	 ErrorCloseFile(8);
 	 
 	 private int value;
-	 MsgType (int value) {
+	 
+	 private MsgType (int value) {
 		 this.value = value;
 	 }
-	 public int getValue() { return this.value; }
+	 public int getValue()
+	 {
+		 return this.value;
+	 }
 	 public static MsgType getType(int value)
 	 {
-		 for (MsgType t : values())
-		 {
+		 for (MsgType t : values()) {
 			 if (t.getValue() == value)
 				 return t;
 		 }

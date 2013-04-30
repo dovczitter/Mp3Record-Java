@@ -24,6 +24,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import com.mp3record.ConfigType;
+import com.mp3record.Util;
 
 // re: http://www.java-tips.org/other-api-tips/javamail/how-to-send-an-email-with-a-file-attachment-4.html
 
@@ -47,7 +48,9 @@ public class Email
     		return;
     	
  	    Session session = Session.getInstance (getProperties(), new Mp3Authenticator(ConfigType.AuthUser.getValue(), ConfigType.AuthPwd.getValue()));
-		String msgText1 = "Sent from Android " +pathName;
+		String msgText1 = 
+			(ConfigType.Subject.getValue().isEmpty() ?	"Sent from Android": ConfigType.Subject.getValue())
+			+" : "+ Util.getFilenameFromPath (pathName);
 		
 		MimeMessage msg = new MimeMessage(session);
 		msg.setFrom(new InternetAddress(ConfigType.AuthUser.getValue()));

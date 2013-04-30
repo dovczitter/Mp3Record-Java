@@ -1,92 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:keepScreenOn="true" >
+    
+    <Chronometer
+        android:id="@+id/CurrentTime"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="50dp"
+        android:layout_gravity="center"
+        android:textSize="30sp"
+        android:gravity="center" />
     
     <Button
         android:id="@+id/RecordButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="center"
         android:layout_marginTop="25dp"
+        android:layout_gravity="center"
         android:background="@drawable/round_start_button"
         android:text="@string/bStart"
         android:textSize="30sp"
         android:gravity="center"
-        android:layout_alignParentLeft="true" />
+        android:layout_centerHorizontal="true" />
     
     <Chronometer
-        android:id="@+id/chronometer"
-        android:layout_marginTop="25dp"
+        android:id="@+id/RecordTime"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="75dp"
         android:layout_gravity="center"
         android:textSize="30sp"
         android:gravity="center"
-        android:layout_toRightOf="@id/RecordButton" />
-    
+        android:layout_toRightOf="@+id/RecordButton" />
+        
 	<TextView
         android:id="@+id/tvFilename"
         android:layout_marginTop="25dp"
 		android:layout_width="match_parent"
 		android:layout_height="100dp"
-        android:layout_gravity="left"
+        android:layout_gravity="center"
         android:ems="10"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:gravity="center"
         android:textIsSelectable="false"
-        android:layout_toRightOf="@id/chronometer" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/RecordButton" />
  
     <Button
         android:id="@+id/EmailMp3Button"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:text="@string/bEmailAvailable"
         android:textSize="25sp"
         android:gravity="center"
-        android:layout_below="@id/RecordButton" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvFilename" />
     
     <Button
         android:id="@+id/EmailFileButton"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:text="@string/bEmailFileAvailable"
         android:textSize="25sp"
         android:gravity="center"
-        android:layout_below="@id/RecordButton"
-        android:layout_toRightOf="@id/EmailMp3Button"  />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/EmailMp3Button"  />
+
+    <Button
+        android:id="@+id/HelpButton"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:text="@string/bHelp"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/EmailFileButton"  />
 
     <Button
         android:id="@+id/ExitButton"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:text="@string/bExit"
         android:textSize="25sp"
         android:gravity="center"
-        android:layout_below="@id/RecordButton"
-        android:layout_toRightOf="@id/EmailFileButton" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/HelpButton" />
     
 	<TextView
         android:id="@+id/tvStatus"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_width="200dp"
+		android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:ems="10"
         android:textSize="25sp"
         android:gravity="center"
-        android:textIsSelectable="true"
-        android:layout_below="@id/EmailMp3Button" />
+        android:textIsSelectable="false"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ExitButton" />
 	
 	<ListView android:id="@android:id/list"
     	android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textSize="100sp"
+        android:gravity="center"
         android:layout_below="@id/tvStatus" />
         
 </RelativeLayout>
