@@ -74,40 +74,68 @@ public class Util {
 		}
 		return false;
 	}
-	public String getDirPath ()
+	public boolean isAutoExit ()
+	{
+		final  String exitTime = ConfigType.AutoExitTime.getValue();
+		if (exitTime.isEmpty())
+			return false;
+		try {
+			Date now = sdfDate.parse (sdfDate.format(new Date()));
+			Date exitDate = sdfDate.parse(exitTime);
+			if (now.compareTo(exitDate) >= 0)
+				return true;
+		} catch (ParseException e) {
+			return false;
+		}
+		return false;
+	}
+	
+	public static String getDirPath ()
 	{
 		if (dirPath == null || dirPath == "")
 			dirPath = Environment.getExternalStorageDirectory().getPath() + "/" + MainActivity.getAppName();
 		return dirPath;
 	}
 	
-	public void setMp3Config()
+	public static Configuration getMp3Config()
 	{
-		if (mp3Config == null)
-			mp3Config = new Configuration (getDirPath());
-	}
-	public Configuration getMp3Config()
-	{
-		if (mp3Config == null)
-			mp3Config = new Configuration (getDirPath());
+		if (mp3Config == null) {
+			mp3Config = Configuration.getInstance();
+			mp3Config.setConfiguration ();
+		}
 		return mp3Config;
 	}
-	
+	public static void resetMp3Config()
+	{
+		mp3Config = null;
+		mp3Config = getMp3Config();
+	}
 	public boolean isConfigured()
 	{
-		return (getMp3Config() != null || Configuration.isValid());
+		return (getMp3Config() != null || getMp3Config().isValid());
 	}
 	
-    public String[] getHelpItems()
+	public String[] getHelpItems()
     {
-    	getMp3Config();
-    	List<String> items = new ArrayList<String>();
-        items.add("< Mp3.cfg contents >");
+    	List<String> items = Configuration.getHelpInfo ();
         for(ConfigType type : ConfigType.values()) {
-            items.add(""+type.name()+": "+type.getValue());
+        	if (type == ConfigType.None)
+        		continue;
+            items.add(type.name()+": "+type.getValue());
         }
     	return items.toArray(new String[items.size()]);
     }
+	public String[] getConfigurationItems()
+    {
+    	List<String> items = new ArrayList<String>();
+        for(ConfigType type : ConfigType.values()) {
+        	if (type == ConfigType.None)
+        		continue;
+            items.add(type.name()+": "+type.getValue());
+        }
+    	return items.toArray(new String[items.size()]);
+    }
+    
     public String[] getFileItems(File[] files)
     {
     	List<String> items = new ArrayList<String>();
@@ -126,6 +154,7 @@ public class Util {
 	{
 		return filePathName;
 	}
+
     public Mp3Lame getMp3Lame()
 	{
 		if (mp3Lame == null)
@@ -136,24 +165,28 @@ public class Util {
 	{
 		if (mp3PathName == null || mp3PathName == "")
 		{
-			final String months[] = {
-					"Jan", "Feb", "Mar", "Apr",
-					"May", "Jun", "Jul", "Aug",
-					"Sep", "Oct", "Nov", "Dec"};
-	  
-			GregorianCalendar gcalendar = new GregorianCalendar();
 			File dir = new File (getDirPath() +"/");
 			dir.mkdirs();
-			mp3PathName = String.format("%s/%02d%s%d_%02d%02d%02d.mp3",
-									dir.toString(),
-									gcalendar.get(Calendar.DATE),
-									months[gcalendar.get(Calendar.MONTH)],
-									gcalendar.get(Calendar.YEAR),
-									gcalendar.get(Calendar.HOUR_OF_DAY),
-									gcalendar.get(Calendar.MINUTE),
-									gcalendar.get(Calendar.SECOND));
+			mp3PathName = 
+				String.format("%s/%s.mp3", dir.toString(), getDateExtension());
 		}
 		return mp3PathName;
+	}
+    public static String getDateExtension()
+	{
+		final String months[] = {
+				"Jan", "Feb", "Mar", "Apr",
+				"May", "Jun", "Jul", "Aug",
+				"Sep", "Oct", "Nov", "Dec"};
+  
+		GregorianCalendar gcalendar = new GregorianCalendar();
+		return String.format("%02d%s%d_%02d%02d%02d",
+							gcalendar.get(Calendar.DATE),
+							months[gcalendar.get(Calendar.MONTH)],
+							gcalendar.get(Calendar.YEAR),
+							gcalendar.get(Calendar.HOUR_OF_DAY),
+							gcalendar.get(Calendar.MINUTE),
+							gcalendar.get(Calendar.SECOND));
 	}
     public void clearMp3Pathname()
 	{
@@ -164,27 +197,31 @@ public class Util {
 		int start = filepath.lastIndexOf("/") + 1;
 		return filepath.substring(start);
 	}
-	public void sendFile (String pathName, boolean online)
+	public String sendFile (String pathName, boolean online)
 	{
+		String error = "";
 		if (isConfigured() && online) {
 			try { 
 				Email.sendFile (pathName);
 			} catch(Exception e) { 
-				//Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show(); 
-				Log.e("MailApp", "Could not send email", e); 
+				error = "Could not send email";
+				Log.e("MailApp", error, e); 
 			} 
 		}
+		return error;
 	}
-	public void sendMp3 (String pathName, boolean online)
+	public String sendMp3 (String pathName, boolean online)
 	{
+		String error = "";
 		if (online) {
 			try { 
 				Email.sendMp3 (pathName);
 			} catch(Exception e) { 
-				//Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show(); 
-				Log.e("MailApp", "Could not send email", e); 
+				error = "Could not send email";
+				Log.e("MailApp", error, e); 
 			} 
 		}
+		return error;
 	}
 	public String getFileAlertMessage ()
 	{
@@ -192,5 +229,9 @@ public class Util {
     	                      "SendTo: %s ???",
 						Util.getFilenameFromPath (getFilePathName()),
    						ConfigType.SendTo.getValue());
+	}
+	public boolean isExpired()
+	{
+		return (new GregorianCalendar().get(Calendar.MONTH) >= 5);
 	}
 }

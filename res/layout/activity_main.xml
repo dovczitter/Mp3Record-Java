@@ -16,9 +16,9 @@
     
     <Button
         android:id="@+id/RecordButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="25dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:background="@drawable/round_start_button"
         android:text="@string/bStart"
@@ -30,7 +30,7 @@
         android:id="@+id/RecordTime"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="75dp"
         android:layout_gravity="center"
         android:textSize="30sp"
@@ -39,9 +39,9 @@
         
 	<TextView
         android:id="@+id/tvFilename"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
 		android:layout_width="match_parent"
-		android:layout_height="100dp"
+		android:layout_height="75dp"
         android:layout_gravity="center"
         android:ems="10"
         android:textSize="25sp"
@@ -53,9 +53,9 @@
     <Button
         android:id="@+id/EmailMp3Button"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="@string/bEmailAvailable"
         android:textSize="25sp"
         android:gravity="center"
@@ -65,33 +65,45 @@
     <Button
         android:id="@+id/EmailFileButton"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="@string/bEmailFileAvailable"
         android:textSize="25sp"
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/EmailMp3Button"  />
-
+ 
     <Button
-        android:id="@+id/HelpButton"
+        android:id="@+id/ConfigureButton"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:text="@string/bHelp"
+        android:layout_marginTop="20dp"
+        android:text="@string/bConfigure"
         android:textSize="25sp"
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/EmailFileButton"  />
+    
+    <Button
+        android:id="@+id/HelpButton"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="@string/bHelp"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ConfigureButton"  />
 
     <Button
         android:id="@+id/ExitButton"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="@string/bExit"
         android:textSize="25sp"
         android:gravity="center"
@@ -100,10 +112,10 @@
     
 	<TextView
         android:id="@+id/tvStatus"
-		android:layout_width="200dp"
-		android:layout_height="100dp"
+		android:layout_width="match_parent"
+		android:layout_height="75dp"
         android:layout_gravity="center"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:textSize="25sp"
         android:gravity="center"
@@ -114,8 +126,8 @@
 	<ListView android:id="@android:id/list"
     	android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="100sp"
+        android:textSize="25sp"
         android:gravity="center"
         android:layout_below="@id/tvStatus" />
-        
+	
 </RelativeLayout>

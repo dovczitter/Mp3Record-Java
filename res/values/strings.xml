@@ -8,6 +8,7 @@
     <string name="bEmailAvailable">Email Mp3</string>
     <string name="bEmailNoWifi">No Wifi</string>
     <string name="bEmailFileAvailable">Email File</string>
+    <string name="bConfigure">Configure</string>
     <string name="bEmailFileNoWifi">No Wifi</string>
     <string name="bHelp">Help</string>
     <string name="bExit">Exit</string>
